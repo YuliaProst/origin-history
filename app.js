@@ -68,5 +68,4 @@ for(let currentLevel = minLevel + 1; currentLevel <= maxLevel; currentLevel++) {
         if (group.level === minLevel) tree.push(group);
     })
 }
-
 console.log(tree);
