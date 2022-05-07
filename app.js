@@ -52,12 +52,20 @@ function checkSubset(A, B){
 
 // console.log(checkSubset([1, 0, 0, 1], [1, 1, 0, 1]));
 
-const minLevel = groupsByDataWithLevel.reduce((previousValue, item, index, array) => {
-    return 
-  });
+const minLevel = Math.min.apply(Math, groupsByDataWithLevel.map(function(o) { return o.level; }));
+const maxLevel = Math.max.apply(Math, groupsByDataWithLevel.map(function(o) { return o.level; }));
+console.log('minLevel: ' + minLevel);
+console.log('maxLevel: ' + maxLevel);
 
-  
+const tree = [];
 
 groupsByDataWithLevel.forEach(group => {
-    
+    if (group.level === minLevel) tree.push(group);
 })
+
+for(let currentLevel = minLevel + 1; currentLevel <= maxLevel; currentLevel++) {
+    groupsByDataWithLevel.forEach(group => {
+        if (group.level === minLevel) tree.push(group);
+    })
+}
+console.log(tree);
