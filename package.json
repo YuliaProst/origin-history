@@ -1,0 +1,19 @@
+{
+  "name": "origin-history-ui",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "danfojs-node": "^1.0.4",
+    "lodash": "^4.17.21",
+    "node-pandas-js": "^1.0.7",
+    "node-xlsx": "^0.21.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
