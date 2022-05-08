@@ -54,21 +54,14 @@ function checkSubset(A, B){
 const minLevel = Math.min.apply(Math, groupsByDataWithLevel.map(function(o) { return o.level; }));
 const maxLevel = Math.max.apply(Math, groupsByDataWithLevel.map(function(o) { return o.level; }));
 
-
-let tree = [];
-
 console.log('minLevel: ', minLevel);
 console.log('maxLevel: ', maxLevel);
 
-let treeWithMin = [];
 
-// console.log('treeWithMin: ', treeWithMin);
 
 console.log('\n\ngroupWithSubset: ');
 
 for(let currentLevel = minLevel; currentLevel <= maxLevel; currentLevel++) {
-        //console.log(util.inspect(arr, {showHidden: false, depth: null, colors: true}))
-
         const currentLevelGroups = groupsByDataWithLevel.filter(currentLevelGroupsItem => currentLevelGroupsItem.level === currentLevel);
         
         currentLevelGroups.forEach((currentGroup, indexCurrentGroup, arrCurrentGroup) => {
@@ -92,34 +85,33 @@ for(let currentLevel = minLevel; currentLevel <= maxLevel; currentLevel++) {
     
 }
 
-console.log(groupsByDataWithLevel);
 
+// console.log(groupsByDataWithLevel);
 
-// for(let currentLevel = minLevel + 1; currentLevel <= maxLevel; currentLevel++) {
-//     treeWithMin.forEach((treeItem, indexTreeItem) => {
-//         groupsByDataWithLevel.forEach(group => {
-//             if (
-//                 currentLevel === group.level 
-//                 && checkSubset(treeItem.elements, group.elements) 
-//                 && !treeItem.locked
-//             ) {
-//                 // treeWithMin.some(treeWithMinItem => {
-//                 //     treeWithMinItem.level})
-//                 if (!treeWithMin.find(item => item.id === group.id)){
-//                     treeWithMin.push(group);
-//                 }
-//                 // Если уже есть элемент с таким group.id, то переходим на след уровень
-//                 for(let searchLevel = currentLevel - 1; searchLevel <= maxLevel; searchLevel++) {
-//                     console.log('searchLevel: ', searchLevel);
-//                     console.log(treeWithMin.some(treeWithMinItem => treeWithMinItem.level === searchLevel && treeWithMinItem.parentId === group.id));
-//                     if (!treeWithMin.some(treeWithMinItem => treeWithMinItem.level === searchLevel && treeWithMinItem.parentId === group.id)){
-//                         treeWithMin[indexTreeItem].parentId = group.id;
-//                         treeWithMin[indexTreeItem].locked = true;
-//                     }
-//                 }
-                
-//                 //console.log(util.inspect(group, {showHidden: false, depth: null, colors: true}))
-//             }
-//         })
-//     })
-// }
+function buildTree (array) {
+    // Складываем все элементы будущего дерева в мап под id-ключами
+    // Так легче делать поиск родительской ноды
+    const map = new Map(groupsByDataWithLevel.map(item => [item.id, item]));
+    
+    // Обход в цикле по значениям, хранящимся в мапе
+    for (let item of map.values()) {
+      
+      // Проверка, является ли нода дочерней (при parent === null вернет undefined)
+      if (!map.has(item.parentId)) {
+        continue;
+      }
+      
+      // Сохраняем прямую ссылку на родительскую ноду, чтобы дважды не доставать из мапа
+      const parentId = map.get(item.parentId);
+  
+      // Добавляем поточную ноду в список дочерних нод родительчкого узла.
+      // Здесь сокращено записана проверка на то, есть ли у ноды свойство children.
+      parentId.children = [...parentId.children || [], item];
+    }
+  
+    // Возвращаем верхний уровень дерева. Все дочерние узлы уже есть в нужных родительских нодах
+    return [...map.values()].filter(item => !item.parentId);
+}
+  
+const tree = buildTree(groupsByDataWithLevel);
+console.log(util.inspect(tree, {showHidden: false, depth: null, colors: true}))
