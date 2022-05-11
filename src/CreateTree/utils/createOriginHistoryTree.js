@@ -8,7 +8,7 @@ export const createOriginHistory = (links) => {
     groupsByDataWithLevel.push({
       groups: group.map((item) => item.name),
       level: group.length,
-      id: groupIndex,
+      id: String(groupIndex),
       elements: group[0].data,
     });
   });
@@ -111,6 +111,6 @@ export const createOriginHistory = (links) => {
   }
 
   const tree = buildTree(groupsByDataWithLevel);
-  
+
   return tree;
 };

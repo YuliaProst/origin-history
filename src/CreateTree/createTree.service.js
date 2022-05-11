@@ -22,14 +22,10 @@ export const createTreeService = async (req, res) => {
           data: row.splice(1, row.length),
         }));
       const tree = createOriginHistory(formattedSheet);
-     
+
 
       //send response
-      res.send({
-        status: true,
-        message: "File is uploaded",
-        data: tree,
-      });
+      res.send(tree);
       await fs.unlinkSync(`./uploads/${dictFile.name}`);
     }
   } catch (err) {
