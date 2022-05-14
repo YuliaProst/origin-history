@@ -11,8 +11,9 @@ export const createTreeService = async (req, res) => {
       });
     } else {
       let dictFile = req.files.dict;
+      // сохраняем файл
       await dictFile.mv(`./uploads/${dictFile.name}`);
-
+// парсинг xlsx файл, превращаем его в массив с данными
        const workSheetsFromFile = xlsx.parse(`./uploads/${dictFile.name}`)[0]
         .data;
       const formattedSheet = workSheetsFromFile
@@ -21,7 +22,9 @@ export const createTreeService = async (req, res) => {
           name: row[0],
           data: row.splice(1, row.length),
         }));
+      //функция обработки теблицы
       const tree = createOriginHistory(formattedSheet);
+
 
 
       //send response
